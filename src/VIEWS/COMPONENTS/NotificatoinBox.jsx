@@ -2,6 +2,8 @@ import React,{useState,useEffect} from "react";
 import CardNotification from "../SINGLES/CardNotification";
 import UserCard from "../SINGLES/UserCard";
 import { Grid } from "@mui/material";
+import Transactions from "../SINGLES/Transactions";
+import ServicePoint from "../SINGLES/ServicePoint";
 
 const BoxTest = [
   {
@@ -44,6 +46,12 @@ const NotificatoinBox = () => {
         ))}
       <Grid item sx={12} sm={6} md={4} lg={3}>
         <UserCard />
+      </Grid>
+      <Grid item sx={12} sm={6} md={4} lg={3}>
+        <Transactions />
+      </Grid>
+      <Grid item sx={12} sm={6} md={4} lg={3}>
+        <ServicePoint />
       </Grid>
     </Grid>
   );

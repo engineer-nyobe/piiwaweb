@@ -9,22 +9,19 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/material";
 import TopBar from "../COMPONENTS/TopBar";
-import { GetAllUsers } from "../../API/UsersQueries";
+import { GetAllTrans } from "../../API/TransactionsQuer";
 
 import { useNavigate } from "react-router-dom";
 
 import EditIcon from "@mui/icons-material/Edit";
 import ChromeReaderModeTwoToneIcon from "@mui/icons-material/ChromeReaderModeTwoTone";
 
-
-
-const Users = () => {
-
-  const navigate=useNavigate();
+const Transactions = () => {
+  const navigate = useNavigate();
 
   const columns = [
-    { id: "_id", label: "USER ID", minWidth: 100 },
-    { id: "phone", label: "USER PHONE", minWidth: 100 },
+    { id: "_id", label: "TRANS ID", minWidth: 100 },
+    { id: "amount", label: "TRANS AMOUNT", minWidth: 100 },
     /*{
       id: "username",
       label: "USER NAME",
@@ -57,23 +54,22 @@ const Users = () => {
     setPage(0);
   };
 
-  const [userData, setUserData] = useState([]);
+  const [transData, setTransData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const getUserData = async () => {
-    const data = await GetAllUsers();
-    setUserData(data);
+    const data = await GetAllTrans();
+    setTransData(data);
   };
 
   useEffect(() => {
     getUserData();
   }, []);
 
-
   return (
     <div className="div">
-      <TopBar title="USERS" />
+      <TopBar title="TRANSACTIONS" />
       <Box
         sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
@@ -94,7 +90,7 @@ const Users = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {userData
+                {transData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     return (
@@ -114,14 +110,6 @@ const Users = () => {
                             </TableCell>
                           );
                         })}
-                        <EditIcon
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => navigate(`/update/${row._id}`)}
-                        />
-                        <ChromeReaderModeTwoToneIcon
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => navigate(`/users/${row._id}`)}
-                        />
                       </TableRow>
                     );
                   })}
@@ -131,7 +119,7 @@ const Users = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={userData.length}
+            count={transData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -143,4 +131,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Transactions;

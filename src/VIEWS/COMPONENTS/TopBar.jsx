@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 
-const TopBar = () => {
+const TopBar = ({title}) => {
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 3 }}>
@@ -25,8 +25,11 @@ const TopBar = () => {
             <HomeIcon />
           </IconButton>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            USERS
+            {title}
           </Typography>
+          <Button color="inherit" onClick={() => title === "USERS"? navigate("/register"):navigate("/")}>
+            new
+          </Button>
           <Button color="inherit" onClick={() => navigate("/login")}>
             Login
           </Button>

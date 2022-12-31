@@ -3,8 +3,9 @@ import Header from "../COMPONENTS/Header";
 import NotificatoinBox from "../COMPONENTS/NotificatoinBox";
 import ToolBar from "../COMPONENTS/ToolBar";
 import Backdrop from "../COMPONENTS/Backdrop";
+import Qrcode from "../SINGLES/Qrcode";
 
-import { GetAllUsers } from "../../API/UsersQueries";
+//import { GetAllUsers } from "../../API/UsersQueries";
 
 const AdminHome = () => {
 
@@ -19,6 +20,7 @@ const AdminHome = () => {
     <div>
       <Header openSidebar={toggleSideBar} />
       <NotificatoinBox />
+      <Qrcode />
       <Backdrop sideBar={sideBar} closeSidebar={toggleSideBar} />
       <ToolBar sideBar={sideBar} closeSidebar={toggleSideBar} />
     </div>

@@ -5,13 +5,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ openSidebar }) => {
+const Spbar = ({ title }) => {
   const navigate = useNavigate();
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 3 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -20,18 +20,18 @@ const Header = ({ openSidebar }) => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={openSidebar}
+            onClick={() => navigate("/home")}
           >
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            ADMIN HOME
+            SERVICE POINT
           </Typography>
-          <Button color="inherit" onClick={()=>navigate("/register")}>
-            Register
+          <Button color="inherit" onClick={() => navigate("/newsp")}>
+            new
           </Button>
-          <Button color="inherit" onClick={()=>navigate("/login")}>
-            Login
+          <Button color="inherit" onClick={() => navigate("/login")}>
+            LogOut
           </Button>
         </Toolbar>
       </AppBar>
@@ -39,4 +39,4 @@ const Header = ({ openSidebar }) => {
   );
 };
 
-export default Header;
+export default Spbar;
