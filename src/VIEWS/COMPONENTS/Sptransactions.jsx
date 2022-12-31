@@ -6,12 +6,13 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Typography } from "@mui/material";
+import { Typography, Box, Button, TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import { GetSessionbyId } from "../../API/Spqueries";
+import { CloseSession } from "../../API/SessionQueries";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,6 +28,10 @@ function Sptransactions({ id }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [session, setsesion] = useState({});
+  const [endsession, setEndSession] = useState({
+    end: new Date()
+  });
+  const { end } = endsession;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -40,6 +45,12 @@ function Sptransactions({ id }) {
   const changeTransaction = async (id) => {
     const data = await GetSessionbyId(id);
     setsesion(data);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { data } = await CloseSession(id, endsession);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -101,12 +112,35 @@ function Sptransactions({ id }) {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          //count={session? session.transactions.length:0}
+          count={session && session.transactions && session.transactions.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        <Box
+          sx={{ margin: 2 }}
+          autoComplete="off"
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+        >
+          <div>
+            <Typography>{id}</Typography>
+          </div>
+            <TextField
+              label="Date end session"
+              variant="outlined"
+              type="datetime-local"
+              value={end}
+              onChange={(e) =>
+                setEndSession({ ...endsession, end: e.target.value })
+              }
+            />
+          <Button type="Submit" onClick={handleSubmit} variant="contained">
+            close Session
+          </Button>
+        </Box>
       </Paper>
     </div>
   );

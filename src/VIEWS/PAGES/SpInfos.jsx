@@ -1,7 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Box, TextField } from "@mui/material";
-import { GetSessionbyId, GetSpById } from "../../API/Spqueries";
+import { Typography, Box, TextField, Button } from "@mui/material";
+import {
+  GetSessionbyId,
+  GetSpById,
+  UpdateSpAccount,
+} from "../../API/Spqueries";
 import { useNavigate } from "react-router-dom";
 
 import Spbar from "../COMPONENTS/Spbar";
@@ -16,6 +20,7 @@ import Paper from "@mui/material/Paper";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import Sptransactions from "../COMPONENTS/Sptransactions";
+import { CreateSession } from "../../API/SessionQueries";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,13 +37,48 @@ function SpInfos() {
   const [sPoint, setsPoint] = useState({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [session,setsession]=useState("");
-  
+  const [session, setsession] = useState("");
+  const [spaccountamount, setspaccountamount] = useState({
+    amount: 0,
+  });
+  const { amount } = spaccountamount;
+
+  const [creationsession, setCreationSession] = useState({
+    name: "",
+    phone: 0,
+  });
+  const {name,phone} = creationsession;
 
   const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleCreateSession = async (e) => {
+    e.preventDefault();
+    setCreationSession({ ...creationsession, name: sPoint.name });
+    try {
+      const {data} = await CreateSession(creationsession);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (sPoint.account) {
+      try {
+        const { data } = await UpdateSpAccount(
+          sPoint.account._id,
+          spaccountamount
+        );
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -50,8 +90,6 @@ function SpInfos() {
     const data = await GetSpById(id);
     setsPoint(data);
   };
-
- 
 
   useEffect(() => {
     getServicepoint();
@@ -125,6 +163,34 @@ function SpInfos() {
             />
           </div>
           <div className="div">
+            <Box
+              sx={{ margin: 2 }}
+              autoComplete="off"
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+            >
+              <Typography>Update account</Typography>
+              <div>
+                <TextField
+                  id="outlined-basic"
+                  label="update account"
+                  variant="outlined"
+                  value={amount}
+                  onChange={(e) =>
+                    setspaccountamount({
+                      ...spaccountamount,
+                      amount: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <Button type="Submit" onClick={handleSubmit} variant="contained">
+                Update account
+              </Button>
+            </Box>
+          </div>
+          <div className="div">
             <Paper sx={{ overflow: "hidden", maxWidth: 700 }}>
               <Typography variant="h4">SESSIONS</Typography>
               <TableContainer component={Paper}>
@@ -189,6 +255,30 @@ function SpInfos() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
+              <Box
+                sx={{ margin: 2 }}
+                autoComplete="off"
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+              >
+                <TextField
+                  label="manager"
+                  variant="outlined"
+                  type="number"
+                  value={phone}
+                  onChange={(e) =>
+                    setCreationSession({ ...creationsession, phone: e.target.value })
+                  }
+                />
+                <Button
+                  type="Submit"
+                  onClick={handleCreateSession}
+                  variant="contained"
+                >
+                  create session
+                </Button>
+              </Box>
             </Paper>
           </div>
           <div>

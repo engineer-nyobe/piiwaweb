@@ -13,3 +13,6 @@ export const GetSpById = async (id) => {
 export const GetSessionbyId = async (id) => {
   return axios.get(`${API_URL}/session/${id}`).then((res) => res.data);
 };
+export const UpdateSpAccount = async (id, amount) => {
+  return axios.put(`${API_URL}/servicepoint/update/${id}`, amount);
+};
